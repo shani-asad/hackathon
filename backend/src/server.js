@@ -26,6 +26,16 @@ mongoose
 
 app.use('/notes', notesRouter);
 
+// APIs for integration testing
+app.get('/', (req, res) => {
+  res.send('welcome to backend service');
+});
+
+app.get('/db/status', (req, res) => {
+  const status = ['disconnected', 'connected', 'connecting', 'disconnecting'];
+  res.json(status[mongoose.connection.readyState]);
+});
+
 // catch 404 and forward to error handler
 app.use((req, res) => {
   res.status(404).json({
@@ -39,6 +49,11 @@ app.use((err, req, res) => {
     message: 'Sorry, there is error in our server',
   });
 });
+app.use((req, res) => {
+  res.status(404).send('<h1> Endpoint not found.</h1>');
+});
 
 // Server listen
-app.listen(3000);
+app.listen(3000, () => {
+  console.log('server listening on http://localhost:3000.');
+});
