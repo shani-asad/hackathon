@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "nodemon -e js,ejs,css,html ./src/server.js",
     "devStart": "nodemon -e js,ejs,css,html ./src/server.js",
     "lint": "eslint . --ext js,jsx,ts,tsx --fix"
   },
