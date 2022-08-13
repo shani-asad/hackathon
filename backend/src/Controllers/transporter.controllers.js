@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const BadRequest = require('../Exceptions/Exceptions');
+const {BadRequest} = require('../Exceptions/Exceptions');
 
 const Trucks = require("../Models/Trucks");
 const TruckTypes = require("../Models/TruckTypes");
@@ -129,6 +129,11 @@ const transGetDriver = async (req, res) => {
 
 const transGetDriverDetails = async (req, res) => {
     const driver = await Drivers.findById(req.params.id)
+
+    if(!driver){
+        return BadRequest(res, 'Cannot find driver ID')
+    }
+
     return res.json({
         success: true,
         data: driver
