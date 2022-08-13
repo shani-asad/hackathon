@@ -31,12 +31,10 @@ const getShipments = async (req, res) => {
 
   const ord = parseInt(order, 10);
 
-  // const shipment = await Shipment
-  //                         .find({ _id: {$ne: search || '', $options: "i"} })
-  //                         .sort({ _id: ord })
-  //                         .exec();
-  
-const shipment = await Shipment.find().sort({ _id: ord }).exec();
+  const shipment = await Shipment
+                          .find({ shipment_number: {$regex: search || '', $options: "i"} })
+                          .sort({ shipment_number: ord })
+                          .exec();
 
   return res.json({
     success: true,
@@ -52,7 +50,14 @@ const getListDistrict = async (req, res) => {
 };
 
 const addShipment = async (req, res) => {
+  // Get latest ship number
+  const shipmentCount = await Shipment.count();
+
+  // Generate custom id
+  const shipNumber = `BO-${shipmentCount}`;
+
   let shipment = new Shipment({
+    shipment_number: shipNumber,
     license: null,
     driver: null,
     origin: req.body.origin,
@@ -67,6 +72,7 @@ const addShipment = async (req, res) => {
     success: true,
     data: {
       id: shipment.id,
+      shipment_number: shipment.shipment_number,
       origin: shipment.origin,
       destination: shipment.destination,
       loading_date: shipment.loading_date,
