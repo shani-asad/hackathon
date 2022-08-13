@@ -4,6 +4,8 @@ const shipmentControllers = require('../Controllers/shipment.controllers');
 
 const router = express.Router();
 
+router.get('/', shipmentControllers.getShipments);
+
 router.get('/districts', shipmentControllers.getListDistrict);
 
 router.post('/add', shipmentControllers.addShipment);
