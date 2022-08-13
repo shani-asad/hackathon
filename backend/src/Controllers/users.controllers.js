@@ -1,5 +1,5 @@
 const User = require('../Models/User');
-const NotFoundError = require('../Exceptions/NotFoundError');
+const NotFoundError = require('../Exceptions/Exceptions');
 
 const login = (req, res) => {
   User.find({ type: req.body.type })
