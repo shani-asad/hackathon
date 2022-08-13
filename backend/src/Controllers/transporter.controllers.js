@@ -79,13 +79,13 @@ const transAddTruck = async (req, res) => {
         return BadRequest(res, 'Licence number is already used!')
     }
 
-    if (!validateLicenceType(req.body.licenceType)) {
+    if (!validateLicenceType(req.body.licenceType.toLowerCase())) {
         return BadRequest(res, 'Licence type is not valid!')
     }
 
     let truck = new Trucks({
         licenceNumber: req.body.licenceNumber,
-        licenceType: req.body.licenceType,
+        licenceType: req.body.licenceType.toLowerCase(),
         truckType: req.body.truckType,
         productionYear: req.body.productionYear,
         status: req.body.status || 'active',
@@ -95,7 +95,7 @@ const transAddTruck = async (req, res) => {
 
     truck = await truck.save()
 
-    return res.json({
+    return res.status(201).json({
         success: true,
         data: {
             id: truck._id,
@@ -165,7 +165,7 @@ const transAddDriver = async (req, res) => {
 
     driver = await driver.save()
 
-    return res.json({
+    return res.status(201).json({
         success: true,
         data: {
             id: driver._id,
