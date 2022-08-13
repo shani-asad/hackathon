@@ -6,8 +6,8 @@ const TrucksSchema = new mongoose.Schema({
   truckType: { type: String, required: true },
   productionYear: { type: Number, required: false },
   status: { type: String, default: 'active', required: true},
-  stnk: { type: String, required: false, unique: true },
-  kir: { type: String, required: false, unique: true },
+  stnk: { type: String, required: false },
+  kir: { type: String, required: false },
 });
 
 TrucksSchema.virtual('id').get(function(){

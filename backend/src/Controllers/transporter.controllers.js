@@ -159,6 +159,7 @@ const transAddDriver = async (req, res) => {
     let driver = new Drivers({
         name: req.body.name,
         phone: req.body.phone,
+        status: req.body.status,
         idCard: req.body.idCard || null,
         licence: req.body.licence || null
     });
@@ -171,6 +172,8 @@ const transAddDriver = async (req, res) => {
             id: driver._id,
             name: driver.name,
             phone: driver.phone,
+            status: driver.status,
+            createdAt: driver.createdAt,
             idCard: driver.idCard,
             licence: driver.licence
         }
