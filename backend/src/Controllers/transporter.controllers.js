@@ -17,7 +17,7 @@ const transGetTruckTypes = async (req, res) => {
     return res.json
         ({
             success: true,
-            data: data
+            data
         })
 }
 
