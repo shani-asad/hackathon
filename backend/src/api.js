@@ -3,11 +3,17 @@ const express = require('express');
 
 const router = express.Router();
 
-const transporterRouter = require('./Routes/transporter.routes');
+const userRouter = require('./Routes/user.routes');
 
-router.use('/trans', transporterRouter);
+router.use('/user', userRouter);
 
-const shipmentRouter = require('./Routes/user.routes');
+// const transporterRouter = require('./Routes/transporter.routes');
+
+// router.use('/transporter', transporterRouter);
+
+// const shipmentRouter = require('./Routes/shipment.routes');
+
+// router.use('/shipment', shipmentRouter);
 
 // RETURN ROUTER AS MODULE
 module.exports = router;
