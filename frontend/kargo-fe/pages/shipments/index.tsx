@@ -18,14 +18,25 @@ import {Shipment} from "../../types/shipper";
 import {ShipperMockData} from "../../const/shipper-mock-data";
 import dayjs from "dayjs";
 import {ChangeEvent, useCallback, useState} from "react";
+import axios, {AxiosResponse} from "axios";
+import {Truck} from "../../types/truck";
+import {Driver} from "../../types/drivers";
 
-const Shipments: NextPage = () => {
+interface Response<T> {
+    success: boolean,
+    data: T[]
+}
+
+interface ShipmentProps {
+    shipments: Shipment[]
+}
+
+const Shipments: NextPage<ShipmentProps> = ({shipments}: ShipmentProps) => {
     const [dropdownValue, setDropdownValue] = useState<string>('');
-    const [dataSource, setDataSource] = useState<Shipment[]>(ShipperMockData)
+    const [dataSource, setDataSource] = useState<Shipment[]>(shipments)
     const filterDataSource = useCallback((input: string) => {
-        console.log(input);
         setDataSource(() => {
-            return ShipperMockData.filter((data: Shipment) => data.id.toLowerCase().includes(input.toLowerCase()));
+            return shipments.filter((data: Shipment) => data.shipment_number.toLowerCase().includes(input.toLowerCase()));
         });
     }, []);
 
@@ -74,15 +85,27 @@ const Shipments: NextPage = () => {
                     <Table>
                         <TableHead>
                             <TableRow>
-                                {
-                                    Object.keys(dataSource[0]).map((attribute: string, index: number) => {
-                                        return (
-                                            <TableCell key={index}>
-                                                {attribute.slice(0, 1).toUpperCase()}{attribute.slice(1)}
-                                            </TableCell>
-                                        )
-                                    })
-                                }
+                                <TableCell>
+                                    Shipment
+                                </TableCell>
+                                <TableCell>
+                                    License
+                                </TableCell>
+                                <TableCell>
+                                    Drivers Name
+                                </TableCell>
+                                <TableCell>
+                                    Origin
+                                </TableCell>
+                                <TableCell>
+                                    Destination
+                                </TableCell>
+                                <TableCell>
+                                    Loading Date
+                                </TableCell>
+                                <TableCell>
+                                    Status
+                                </TableCell>
                                 <TableCell align={"right"}>
                                     Action
                                 </TableCell>
@@ -93,12 +116,12 @@ const Shipments: NextPage = () => {
                                 dataSource.map((data: Shipment, index: number) => {
                                     return (
                                         <TableRow key={index}>
-                                            <TableCell>{data.id}</TableCell>
+                                            <TableCell>{data.shipment_number}</TableCell>
                                             <TableCell>{data.license}</TableCell>
                                             <TableCell>{data.driverName}</TableCell>
                                             <TableCell>{data.origin}</TableCell>
                                             <TableCell>{data.destination}</TableCell>
-                                            <TableCell>{dayjs.unix(Number(data.loadingDate)).format('D MMMM YYYY')}</TableCell>
+                                            <TableCell>{dayjs.unix(data.loadingDate).format('D MMMM YYYY')}</TableCell>
                                             <TableCell>{data.status}</TableCell>
                                             <TableCell align={"right"}>
                                                 <FormControl sx={{minWidth: 175}}>
@@ -111,10 +134,14 @@ const Shipments: NextPage = () => {
                                                         }}
                                                     >
                                                         <MenuItem key={"Allocate Shipment"} value={"Allocate Shipment"}>
-                                                            Allocate Shipment
+                                                            <Link href={`/shipments/allocate/${data.shipment_number}`}>
+                                                                Allocate Shipment
+                                                            </Link>
                                                         </MenuItem>
                                                         <MenuItem key={"Update Status"} value={"Update Status"}>
-                                                            Update Status
+                                                            <Link href={`/update-status/${data.shipment_number}`}>
+                                                                Update Status
+                                                            </Link>
                                                         </MenuItem>
                                                     </Select>
                                                 </FormControl>
@@ -129,6 +156,19 @@ const Shipments: NextPage = () => {
             </main>
         </>
     )
+}
+
+// http://localhost:3000/api/shipment/
+
+export async function getServerSideProps() {
+    const response = await axios.get<AxiosResponse<Response<Shipment>>>('http://localhost:3000/api/shipment/')
+    const shipmentData = response.data
+
+    return {
+        props: {
+            shipments: shipmentData.data
+        },
+    }
 }
 
 export default Shipments

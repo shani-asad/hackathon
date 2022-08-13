@@ -1,11 +1,14 @@
 export interface Shipment {
+    _id: string,
     id: string,
-    license: string,
-    driverName: string,
+    shipment_number: string,
+    license?: string,
+    driverName?: string,
     origin: string,
     destination: string,
-    loadingDate: string,
-    status: ShipperStatus
+    loadingDate: number,
+    status: ShipperStatus,
+    __v: number,
 }
 
 export enum ShipperStatus {
