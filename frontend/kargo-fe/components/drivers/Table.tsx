@@ -17,11 +17,13 @@ import {
   Driver,
   DriverDocument,
   DriverStatus,
+  DriverResponse,
   Order,
   Action,
 } from "../../types/driver";
 import { HeadTable } from "./TableHead";
 import { useRouter } from "next/router";
+import axios from "axios";
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -61,30 +63,36 @@ function stableSort<T>(
 }
 
 export default function DriversTable(props: any) {
-  const rows: DriverTable[] = [
-    {
-      id: "1",
-      name: "Jack",
-      phoneNumber: "1234567889",
-      createdAt: "2 Agustus 2020",
-      status: DriverStatus.ACTIVE,
-      dropdown: "Update",
-    },
-    {
-      id: "2",
-      name: "Jane",
-      phoneNumber: "1234567889",
-      createdAt: "2 Agustus 2021",
-      status: DriverStatus.INACTIVE,
-      dropdown: "Update",
-    },
-  ];
+  React.useEffect(() => {
+    const getDrivers = async () => {
+      try {
+        const result = await axios.get(
+          "http://localhost:3000/api/transporter/drivers/get"
+        );
+        console.log(result);
+
+        return result.data.data;
+      } catch (e: any) {
+        console.log(e.message);
+      }
+    };
+    getDrivers().then((data) => {
+      const filtered: DriverTable[] = data.map((el: DriverResponse) => {
+        const { name, phone, id, status, createdAt } = el;
+
+        return { id, name, phoneNumber: phone, status, createdAt };
+      });
+
+      setRows(filtered);
+    });
+  }, []);
 
   const router = useRouter();
   const [order, setOrder] = React.useState<Order>("asc");
   const [orderBy, setOrderBy] = React.useState<keyof DriverTable>("name");
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rows, setRows] = React.useState<DriverTable[]>([]);
 
   async function handleRequestSort(
     event: React.MouseEvent<unknown>,

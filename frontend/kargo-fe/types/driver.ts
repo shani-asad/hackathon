@@ -7,6 +7,14 @@ export interface Driver {
   document: DriverDocument;
 }
 
+export interface DriverResponse {
+  id: string;
+  name: string;
+  phone: string;
+  createdAt: Date;
+  status: string;
+}
+
 export interface DriverTable {
   id: string;
   name: string;
