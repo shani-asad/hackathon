@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const {BadRequest} = require('../Exceptions/Exceptions');
+const ObjectId = require('mongoose').Types.ObjectId;
 
 const Trucks = require("../Models/Trucks");
 const TruckTypes = require("../Models/TruckTypes");
@@ -53,7 +54,16 @@ const transGetTruck = async (req, res) => {
 }
 
 const transGetTruckDetails = async (req, res) => {
+    if(!ObjectId.isValid(req.params.id)){
+        return BadRequest(res, `Id invalid`)
+    }
+
     const truck = await Trucks.findById(req.params.id)
+
+    if(!truck){
+        return BadRequest(res, `Cannot find truck with id ${req.params.id}`)
+    }
+
     return res.json
         ({
             success: true,
@@ -128,10 +138,14 @@ const transGetDriver = async (req, res) => {
 }
 
 const transGetDriverDetails = async (req, res) => {
+    if(!ObjectId.isValid(req.params.id)){
+        return BadRequest(res, `Id invalid`)
+    }
+
     const driver = await Drivers.findById(req.params.id)
 
     if(!driver){
-        return BadRequest(res, 'Cannot find driver ID')
+        return BadRequest(res, `Cannot find driver with id ${req.params.id}`)
     }
 
     return res.json({
