@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const Shipment = require('../Models/Shipment');
 const Driver = require('../Models/Drivers');
 const Truck = require('../Models/Trucks');
-const { BadRequest } = require('../Exceptions/Exceptions');
+const { BadRequest, NotFoundError } = require('../Exceptions/Exceptions');
 
 const district = [];
 
@@ -27,7 +27,16 @@ async function getDistricts() {
 getDistricts();
 
 const getShipments = async (req, res) => {
-  const shipment = await Shipment.find();
+  const {order, search} = req.query;
+
+  const ord = parseInt(order, 10);
+
+  // const shipment = await Shipment
+  //                         .find({ _id: {$ne: search || '', $options: "i"} })
+  //                         .sort({ _id: ord })
+  //                         .exec();
+  
+const shipment = await Shipment.find().sort({ _id: ord }).exec();
 
   return res.json({
     success: true,
@@ -54,7 +63,7 @@ const addShipment = async (req, res) => {
 
   shipment = await shipment.save();
 
-  return res.json({
+  return res.status(201).json({
     success: true,
     data: {
       id: shipment.id,
@@ -119,7 +128,11 @@ const allocateShipmentId = async (req, res) => {
       },
     );
 
-    return res.json({
+    if (shipment == null) {
+      return NotFoundError(res, 'Shipment id not found');
+    }
+
+    return res.status(201).json({
       success: true,
       message: 'Shipment allocated',
       data: shipment,
@@ -162,7 +175,11 @@ const updateStatusShipmentId = async (req, res) => {
     },
   );
 
-  return res.json({
+  if (shipment == null) {
+    return NotFoundError(res, 'Shipment id not found');
+  }
+
+  return res.status(201).json({
     success: true,
     message: 'Shipment status updated',
     data: shipment,
