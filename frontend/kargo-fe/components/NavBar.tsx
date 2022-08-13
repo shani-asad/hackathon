@@ -1,8 +1,13 @@
 import React from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 function NavBar() {
+  const router = useRouter();
+  const handleLogout = () => {
+    router.push("/login");
+  };
   return (
     <div className="border flex flex-row justify-between">
       <div>
@@ -29,12 +34,10 @@ function NavBar() {
           </div>
         </nav>
       </div>
-      <div className="px-2 sm:px-4 py-2.5 border rounded-full flex flex-row">
-        <Link href="/login">
-          <AiOutlineClose size={20} className="w-full h-full" />
-        </Link>
+      <div className="px-2 sm:px-4 py-2.5 border rounded-full flex flex-row align-middle mx-5 my-1">
+        <AiOutlineClose size={20} onClick={handleLogout} className="w-full h-full px-3 hover:cursor-pointer" />
 
-        <span className="w-full h-full">Trucks</span>
+        <span className="w-full h-full my-3">Trucks</span>
       </div>
     </div>
   );

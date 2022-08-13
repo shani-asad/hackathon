@@ -1,4 +1,6 @@
 import React from "react";
+import { useRouter } from "next/router";
+import Link from "next/link";
 
 export default function TableTrucks() {
   const products = [
@@ -6,9 +8,7 @@ export default function TableTrucks() {
     { id: 2, license: "B 1234 A", truckType: "Tronton", plateType: "Yellow", productionYear: "2001", status: "Active" },
     { id: 3, license: "B 1234 A", truckType: "Tronton", plateType: "Yellow", productionYear: "2001", status: "Active" },
   ];
-  const handleDetailTrucks = () => {
-    
-  }
+  const router = useRouter();
 
   return (
     <div>
@@ -55,7 +55,14 @@ export default function TableTrucks() {
           <tbody>
             {products.map((product) => (
               <tr key={product.id} className="text-center border">
-                <td className="border p-3" onClick={handleDetailTrucks}>{product.license}</td>
+                <td
+                  className="border p-3"
+                  onClick={() => {
+                    router.push(`trucks/${product.id}`);
+                  }}
+                >
+                  {product.license}
+                </td>
                 <td className="border">{product.truckType}</td>
                 <td className="border">{product.plateType}</td>
                 <td className="border">{product.productionYear}</td>
