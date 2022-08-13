@@ -18,3 +18,12 @@ a {
 * {
   box-sizing: border-box;
 }
+
+@layer components {
+    .input-form {
+        @apply placeholder:text-sm placeholder:tracking-tight placeholder:font-light placeholder:xl:text-base
+        focus:border-gray-300 focus:ring-0 border outline-none
+        text-gray-500 w-full rounded p-2 tracking-tight font-normal text-sm xl:text-base border-gray-300
+        read-only:bg-gray-300 read-only:border-gray-300 read-only:focus:ring-0 read-only:focus:border-gray-300 read-only:text-gray-500;
+    }
+}

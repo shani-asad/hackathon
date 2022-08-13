@@ -1,10 +1,18 @@
 import type {NextPage} from 'next'
 import Head from 'next/head'
+import axios, {AxiosResponse} from "axios";
+
+type ApiReturn = {
+    data: any[],
+    message: string
+}
 
 const Home: NextPage = () => {
-    function testConnection(): void {
 
-        console.log('connect');
+    function testConnection(): void {
+        axios.get('http://localhost:3000/notes/get').then((response: AxiosResponse<ApiReturn>) => {
+            console.log(response.data.message);
+        })
     }
 
     return (
