@@ -26,6 +26,15 @@ async function getDistricts() {
 
 getDistricts();
 
+const getShipments = async (req, res) => {
+  const shipment = await Shipment.find();
+
+  return res.json({
+    success: true,
+    data: shipment,
+  });
+};
+
 const getListDistrict = async (req, res) => {
   res.json({
     success: true,
@@ -161,6 +170,7 @@ const updateStatusShipmentId = async (req, res) => {
 };
 
 module.exports = {
+  getShipments,
   getListDistrict,
   addShipment,
   getAllocationId,
