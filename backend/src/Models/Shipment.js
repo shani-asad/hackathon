@@ -7,7 +7,7 @@ const shipmentSchema = new mongoose.Schema({
   origin: { type: String, required: true },
   destination: { type: String, required: true },
   loading_date: { type: Number, required: true },
-  status: { type: String },
+  status: { type: String, default: 'Created', required: true},
 });
 
 shipmentSchema.virtual('id').get(function () {

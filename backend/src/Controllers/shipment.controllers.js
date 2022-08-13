@@ -97,14 +97,24 @@ const allocateShipmentId = async (req, res) => {
 
   let isDriverValid = true;
 
+  let truckId, driverId; 
+
   // Check if license in trucks
   const isTruckValid = await Truck.find({ licenceNumber: license })
     .exec()
-    .then((data) => {
+    .then((response) => {
+      const data = response[0];
       if (data.length < 1) {
         BadRequest(res, 'Truck not exist');
         return false;
       }
+      
+      // Check if truck is available
+      if (data.status != 'active') {
+        return false;
+      }
+
+      truckId = data._id;
       return true;
     });
 
@@ -112,22 +122,54 @@ const allocateShipmentId = async (req, res) => {
   if (isTruckValid) {
     isDriverValid = await Driver.find({ name: driver })
       .exec()
-      .then((data) => {
+      .then((response) => {
+        const data = response[0];
         if (data.length < 1) {
           BadRequest(res, 'Driver not exist');
           return false;
         }
+        else {
+          // check if driver is available
+          if (data.status != 'active') {
+            return false;
+          }
+        }
+
+        driverId = data._id;
         return true;
       });
   }
 
   // Update controller
   if (isTruckValid && isDriverValid) {
+    // Update shipment status
     const shipment = await Shipment.findByIdAndUpdate(
       req.params.id,
       {
         license,
         driver,
+      },
+      {
+        returnOriginal: false,
+      },
+    );
+
+    // Update Truck status
+    await Truck.findByIdAndUpdate(
+      truckId,
+      {
+        status: 'inactive',
+      },
+      {
+        returnOriginal: false,
+      },
+    );
+
+    // Update Driver status
+    await Driver.findByIdAndUpdate(
+      driverId,
+      {
+        status: 'inactive',
       },
       {
         returnOriginal: false,
