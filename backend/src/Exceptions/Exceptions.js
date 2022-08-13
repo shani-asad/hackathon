@@ -22,4 +22,4 @@ const serverError = (res, message) => {
 };
 
 
-module.exports = NotFoundError;
+module.exports = {NotFoundError, BadRequest, serverError,};
