@@ -85,7 +85,7 @@ const transAddTruck = async (req, res) => {
 
     let truck = new Trucks({
         licenceNumber: req.body.licenceNumber,
-        licenceType: req.body.licenceType,
+        licenceType: req.body.licenceType.toLowerCase(),
         truckType: req.body.truckType,
         productionYear: req.body.productionYear,
         status: req.body.status || 'active',
