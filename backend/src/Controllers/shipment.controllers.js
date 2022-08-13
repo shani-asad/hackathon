@@ -29,7 +29,10 @@ getDistricts();
 const getShipments = async (req, res) => {
   const {order, search} = req.query;
 
-  const ord = parseInt(order, 10);
+  let ord = 1;
+  if (order != null || order != ''){
+    ord = parseInt(order, 10)
+  }
 
   const shipment = await Shipment
                           .find({ shipment_number: {$regex: search || '', $options: "i"} })
