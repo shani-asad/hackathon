@@ -1,0 +1,191 @@
+{
+	"id": "431ba6de-765c-41a1-ae21-438673ab6a52",
+	"name": "Kargo",
+	"timestamp": "2022-08-13T08:35:29.628Z",
+	"collection_id": "0-4e3948c7-18c8-4f41-b036-6cc5c8474652",
+	"folder_id": 0,
+	"environment_id": "b53cae6c-9077-4a5c-83aa-6f09d82754fd",
+	"totalPass": 8,
+	"totalFail": 0,
+	"results": [
+		{
+			"id": "6cb4eac3-1c45-4973-906e-9f2023605752",
+			"name": "Add Truck",
+			"url": "http://localhost:3000/api/transporter/trucks/add",
+			"time": 115,
+			"responseCode": {
+				"code": 201,
+				"name": "Created"
+			},
+			"tests": {
+				"status code should be 201": true
+			},
+			"testPassFailCounts": {
+				"status code should be 201": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				115
+			],
+			"allTests": [
+				{
+					"status code should be 201": true
+				}
+			]
+		},
+		{
+			"id": "1a174998-bc6c-4857-9d2f-263a42903743",
+			"name": "Update Truck",
+			"url": "http://localhost:3000/api/transporter/trucks/update/62f727fdc0dc0dcbd5fe2478",
+			"time": 38,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"status code should be 201": true
+			},
+			"testPassFailCounts": {
+				"status code should be 201": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				38
+			],
+			"allTests": [
+				{
+					"status code should be 201": true
+				}
+			]
+		},
+		{
+			"id": "c1e0972e-95fc-4c49-b33d-a40bbb5ea2f2",
+			"name": "Get All Trucks",
+			"url": "http://localhost:3000/api/transporter/trucks/get",
+			"time": 38,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"status code should be 200": true,
+				"response body object should have correct property and value": true
+			},
+			"testPassFailCounts": {
+				"status code should be 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"response body object should have correct property and value": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				38
+			],
+			"allTests": [
+				{
+					"status code should be 200": true,
+					"response body object should have correct property and value": true
+				}
+			]
+		},
+		{
+			"id": "0889792e-ba1b-4229-a561-9985b44c2fbb",
+			"name": "Get Truck by id",
+			"url": "http://localhost:3000/api/transporter/trucks/get/62f727fdc0dc0dcbd5fe2478",
+			"time": 40,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"status code should be 200": true,
+				"response body object should have correct property and value": true
+			},
+			"testPassFailCounts": {
+				"status code should be 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"response body object should have correct property and value": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				40
+			],
+			"allTests": [
+				{
+					"status code should be 200": true,
+					"response body object should have correct property and value": true
+				}
+			]
+		},
+		{
+			"id": "efeb4809-6989-43d3-8b1c-bbde3c630bae",
+			"name": "Get All Drivers",
+			"url": "http://localhost:3000/api/transporter/drivers/get",
+			"time": 41,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"status code should be 200": true,
+				"response body object should have correct property and value": true
+			},
+			"testPassFailCounts": {
+				"status code should be 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"response body object should have correct property and value": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				41
+			],
+			"allTests": [
+				{
+					"status code should be 200": true,
+					"response body object should have correct property and value": true
+				}
+			]
+		}
+	],
+	"count": 1,
+	"totalTime": 272,
+	"collection": {
+		"requests": [
+			{
+				"id": "6cb4eac3-1c45-4973-906e-9f2023605752",
+				"method": "POST"
+			},
+			{
+				"id": "1a174998-bc6c-4857-9d2f-263a42903743",
+				"method": "PUT"
+			},
+			{
+				"id": "c1e0972e-95fc-4c49-b33d-a40bbb5ea2f2",
+				"method": "GET"
+			},
+			{
+				"id": "0889792e-ba1b-4229-a561-9985b44c2fbb",
+				"method": "GET"
+			},
+			{
+				"id": "efeb4809-6989-43d3-8b1c-bbde3c630bae",
+				"method": "GET"
+			}
+		]
+	}
+}
