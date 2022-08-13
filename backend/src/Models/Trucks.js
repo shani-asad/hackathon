@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const truckSchema = new mongoose.Schema({
+const TrucksSchema = new mongoose.Schema({
   _id: mongoose.Schema.Types.ObjectId,
   licenceNumber: { type: String, required: true },
   licenceType: { type: String, required: true },
@@ -10,4 +10,4 @@ const truckSchema = new mongoose.Schema({
   kir: { type: String, required: false },
 });
 
-module.exports = mongoose.model('Truck', truckSchema);
+module.exports = mongoose.model('Trucks', TrucksSchema);

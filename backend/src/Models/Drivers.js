@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const driverSchema = new mongoose.Schema({
+const DriversSchemama = new mongoose.Schema({
   _id: mongoose.Schema.Types.ObjectId,
   name: { type: String, required: true },
   phone: { type: Number, required: true },
@@ -8,4 +8,4 @@ const driverSchema = new mongoose.Schema({
   licence: { type: String, required: false },
 });
 
-module.exports = mongoose.model('Driver', driverSchema);
+module.exports = mongoose.model('Drivers', DriversSchemama);
