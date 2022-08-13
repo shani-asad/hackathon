@@ -95,7 +95,7 @@ const transAddTruck = async (req, res) => {
 
     truck = await truck.save()
 
-    return res.json({
+    return res.status(201).json({
         success: true,
         data: {
             id: truck._id,
@@ -165,7 +165,7 @@ const transAddDriver = async (req, res) => {
 
     driver = await driver.save()
 
-    return res.json({
+    return res.status(201).json({
         success: true,
         data: {
             id: driver._id,
