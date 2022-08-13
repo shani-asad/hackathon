@@ -1,15 +1,12 @@
 const mongoose = require('mongoose');
 
-const userSchema = new mongoose.Schema({
-  _id: mongoose.Schema.Types.ObjectId,
-  name: String,
-  email: {
+const userSchema = new mongoose.Schema(
+  {
+    _id: mongoose.Schema.Types.ObjectId,
     type: String,
-    lowercase: true,
-    match: /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/,
   },
-  password: String,
-  phone_number: Number,
-});
-
-module.exports = mongoose.model('User', userSchema);
+  {
+    versionKey: false,
+  },
+);
+module.exports = mongoose.model('Users', userSchema);
