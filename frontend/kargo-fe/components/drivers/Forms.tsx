@@ -57,18 +57,39 @@ const FormDriver = (props: any = null) => {
   async function handleSubmit() {
     const isValid = formValues.name && formValues.phoneNumber;
     if (isValid) {
-      const upload = async () => {
-        await axios.post("http://localhost:3000/api/transporter/drivers/add", {
-          name: formValues.name,
-          phone: formValues.phoneNumber,
-          idCard: "",
-          license: "",
-        });
-      };
+      if (id) {
+        const update = async () => {
+          const res = await axios.put(
+            `http://localhost:3000/api/transporter/drivers/update/${id}`,
+            {
+              name: formValues.name,
+              phone: formValues.phoneNumber,
+              idCard: "",
+              license: "",
+            }
+          );
+        };
 
-      upload().then(() => {
-        console.log("succeed");
-      });
+        update().then(() => {
+          console.log("succeed");
+        });
+      } else {
+        const upload = async () => {
+          await axios.post(
+            "http://localhost:3000/api/transporter/drivers/add",
+            {
+              name: formValues.name,
+              phone: formValues.phoneNumber,
+              idCard: "",
+              license: "",
+            }
+          );
+        };
+
+        upload().then(() => {
+          console.log("succeed");
+        });
+      }
     } else {
     }
   }
