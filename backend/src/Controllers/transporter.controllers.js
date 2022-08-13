@@ -1,23 +1,27 @@
 const mongoose = require('mongoose');
-const Notes = require('../Models/Notes');
-const bodyParser = require("body-parser");
 
 const Trucks = require("../Models/Trucks");
+const Drivers = require("../Models/Drivers");
 
+////////// TRUCKS //////////
 const transGetTruck = async (req, res) => {
-    const truck = res.json(await Trucks.find())
-    return {
-        success: true,
-        data: truck
-    }
+    const trucks = await Trucks.find()
+
+    return res.json
+        ({
+            success: true,
+            data: trucks
+        })
 }
 
 const transGetTruckDetails = async (req, res) => {
-    const truck = res.json(await Trucks.findById(req.params.id))
-    return {
-        success: true,
-        data: truck
-    }
+    const truck = await Trucks.findById(req.params.id)
+    return res.json
+        ({
+            success: true,
+            data: truck
+        })
+
 }
 
 const transAddTruck = async (req, res) => {
@@ -25,7 +29,7 @@ const transAddTruck = async (req, res) => {
         return res.json({ success: false, message: 'Licence number is already used!' })
     }
 
-    let truck = new Trucks({
+    const truck = new Trucks({
         licenceNumber: req.body.licenceNumber,
         licenceType: req.body.licenceType,
         truckType: req.body.truckType,
@@ -44,30 +48,92 @@ const transAddTruck = async (req, res) => {
             licenceType: truck.licenceType,
             truckType: truck.truckType,
             productionYear: truck.productionYear,
-            stnk: truck.stnk || null,
-            kir: truck.kir || null
+            stnk: truck.stnk,
+            kir: truck.kir
         }
     });
 }
 
 const transUpdateTruck = async (req, res) => {
-    const truck = res.json(await Trucks.findByIdAndUpdate(
+    const truck = await Trucks.findByIdAndUpdate(
         req.params.id,
         req.body,
         {
             returnOriginal: false,
         }
-    ));
+    );
 
-    return {
+    return res.json({
         success: true,
         data: truck
+    })
+}
+
+////////// DRIVERS //////////
+const transGetDriver = async (req, res) => {
+    const driver = await Drivers.find()
+    return res.json({
+        success: true,
+        data: driver
+    })
+}
+
+const transGetDriverDetails = async (req, res) => {
+    const driver = await Drivers.findById(req.params.id)
+    return res.json({
+        success: true,
+        data: driver
+    })
+}
+
+const transAddDriver = async (req, res) => {
+    if (await Drivers.findOne({ phone: req.body.phone })) {
+        return res.json({ success: false, message: 'Phone number is already used!' })
     }
+
+    let driver = new Drivers({
+        name: req.body.name,
+        phone: req.body.phone,
+        idCard: req.body.idCard || null,
+        licence: req.body.licence || null
+    });
+
+    driver = await driver.save()
+
+    return res.json({
+        success: true,
+        data: {
+            id: driver._id,
+            name: driver.name,
+            phone: driver.phone,
+            idCard: driver.idCard,
+            licence: driver.licence
+        }
+    });
+}
+
+const transUpdateDriver = async (req, res) => {
+    const driver = await Drivers.findByIdAndUpdate(
+        req.params.id,
+        req.body,
+        {
+            returnOriginal: false,
+        }
+    );
+
+    return res.json({
+        success: true,
+        data: driver
+    })
 }
 
 module.exports = {
     transAddTruck,
     transGetTruck,
     transGetTruckDetails,
-    transUpdateTruck
+    transUpdateTruck,
+    transAddDriver,
+    transGetDriver,
+    transGetDriverDetails,
+    transUpdateDriver
 }

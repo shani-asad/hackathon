@@ -1,11 +1,18 @@
 const mongoose = require('mongoose');
 
-const DriversSchemama = new mongoose.Schema({
-  _id: mongoose.Schema.Types.ObjectId,
+const DriversSchema = new mongoose.Schema({
   name: { type: String, required: true },
   phone: { type: Number, required: true },
   idCard: { type: String, required: false },
   licence: { type: String, required: false },
 });
 
-module.exports = mongoose.model('Drivers', DriversSchemama);
+DriversSchema.virtual('id').get(function(){
+  return this._id.toHexString();
+});
+
+DriversSchema.set('toJSON', {
+  virtuals: true
+});
+
+module.exports = mongoose.model('Drivers', DriversSchema);

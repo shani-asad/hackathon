@@ -7,9 +7,9 @@ const userRouter = require('./Routes/user.routes');
 
 router.use('/user', userRouter);
 
-// const transporterRouter = require('./Routes/transporter.routes');
+const transporterRouter = require('./Routes/transporter.routes');
 
-// router.use('/transporter', transporterRouter);
+router.use('/transporter', transporterRouter);
 
 // const shipmentRouter = require('./Routes/shipment.routes');
 

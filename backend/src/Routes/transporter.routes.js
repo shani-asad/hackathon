@@ -16,11 +16,11 @@ router.get('/trucks/get/:id', transporterControllers.transGetTruckDetails);
 router.post('/trucks/add', transporterControllers.transAddTruck);
 router.put('/trucks/update/:id', transporterControllers.transUpdateTruck);
 //ticket4
-// router.get('drivers',transporterControllers.transGetDriver);
-// router.get('/drivers/details', transporterControllers.transGetDriverDetails);
+router.get('/drivers/get',transporterControllers.transGetDriver);
+router.get('/drivers/get/:id', transporterControllers.transGetDriverDetails);
 // //ticket5
-// router.post('/addDriver',transporterControllers.transAddDriver);
-// router.put('/editDriver',transporterControllers.transUpdateDriver);
+router.post('/drivers/add',transporterControllers.transAddDriver);
+router.put('/drivers/update/:id',transporterControllers.transUpdateDriver);
 
 
 

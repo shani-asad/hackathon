@@ -9,4 +9,12 @@ const TrucksSchema = new mongoose.Schema({
   kir: { type: String, required: false },
 });
 
+TrucksSchema.virtual('id').get(function(){
+  return this._id.toHexString();
+});
+
+TrucksSchema.set('toJSON', {
+  virtuals: true
+});
+
 module.exports = mongoose.model('Trucks', TrucksSchema);
