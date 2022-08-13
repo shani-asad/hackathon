@@ -2,9 +2,9 @@ import {NextPage} from "next";
 import Head from "next/head";
 import Link from "next/link";
 import {
-    Button,
-    InputAdornment,
-    Paper,
+    Button, FormControl,
+    InputAdornment, MenuItem,
+    Paper, Select, SelectChangeEvent,
     Table,
     TableBody,
     TableCell,
@@ -20,13 +20,14 @@ import dayjs from "dayjs";
 import {ChangeEvent, useCallback, useState} from "react";
 
 const Shipments: NextPage = () => {
+    const [dropdownValue, setDropdownValue] = useState<string>('');
     const [dataSource, setDataSource] = useState<Shipment[]>(ShipperMockData)
     const filterDataSource = useCallback((input: string) => {
         console.log(input);
         setDataSource(() => {
             return ShipperMockData.filter((data: Shipment) => data.id.toLowerCase().includes(input.toLowerCase()));
         });
-    }, [])
+    }, []);
 
     return (
         <>
@@ -52,9 +53,11 @@ const Shipments: NextPage = () => {
             </header>
             <main className="container py-12">
                 <div className="flex justify-end items-center">
-                    <Button className={'mr-6'} variant={"outlined"} size={"large"} endIcon={<Add />}>
-                        Add Shipment
-                    </Button>
+                    <Link href={'/add-shipment'}>
+                        <Button className={'mr-6'} variant={"outlined"} size={"large"} endIcon={<Add/>}>
+                            Add Shipments
+                        </Button>
+                    </Link>
                     <TextField label="Search Shipment"
                                variant={"outlined"}
                                onChange={(e: ChangeEvent<HTMLInputElement>) => filterDataSource(e.target.value)}
@@ -75,7 +78,7 @@ const Shipments: NextPage = () => {
                                     Object.keys(dataSource[0]).map((attribute: string, index: number) => {
                                         return (
                                             <TableCell key={index}>
-                                                {attribute.slice(0,1).toUpperCase()}{attribute.slice(1)}
+                                                {attribute.slice(0, 1).toUpperCase()}{attribute.slice(1)}
                                             </TableCell>
                                         )
                                     })
@@ -97,7 +100,25 @@ const Shipments: NextPage = () => {
                                             <TableCell>{data.destination}</TableCell>
                                             <TableCell>{dayjs.unix(Number(data.loadingDate)).format('D MMMM YYYY')}</TableCell>
                                             <TableCell>{data.status}</TableCell>
-                                            <TableCell align={"right"}>{data.status}</TableCell>
+                                            <TableCell align={"right"}>
+                                                <FormControl sx={{minWidth: 175}}>
+                                                    <Select
+                                                        value={dropdownValue}
+                                                        id="shipment-dropdown-table-row"
+                                                        displayEmpty
+                                                        renderValue={() => {
+                                                            return <em>Action</em>;
+                                                        }}
+                                                    >
+                                                        <MenuItem key={"Allocate Shipment"} value={"Allocate Shipment"}>
+                                                            Allocate Shipment
+                                                        </MenuItem>
+                                                        <MenuItem key={"Update Status"} value={"Update Status"}>
+                                                            Update Status
+                                                        </MenuItem>
+                                                    </Select>
+                                                </FormControl>
+                                            </TableCell>
                                         </TableRow>
                                     )
                                 })
