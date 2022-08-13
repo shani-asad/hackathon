@@ -71,6 +71,8 @@ const allocateShipmentId = async (req, res) => {
   const { license } = req.body;
   const { driver } = req.body;
 
+  let isDriverValid = true;
+
   // Check if license in trucks
   const isTruckValid = await Truck.find({ licenceNumber: license })
     .exec()
@@ -84,7 +86,7 @@ const allocateShipmentId = async (req, res) => {
 
   // Check if driver in drivers
   if (isTruckValid) {
-    const isDriverValid = await Driver.find({ name: driver })
+    isDriverValid = await Driver.find({ name: driver })
       .exec()
       .then((data) => {
         if (data.length < 1) {
