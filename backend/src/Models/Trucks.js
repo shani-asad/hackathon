@@ -5,6 +5,7 @@ const TrucksSchema = new mongoose.Schema({
   licenceType: { type: String, required: true },
   truckType: { type: String, required: true },
   productionYear: { type: Number, required: false },
+  status: { type: String, default: 'active', required: true},
   stnk: { type: String, required: false },
   kir: { type: String, required: false },
 });

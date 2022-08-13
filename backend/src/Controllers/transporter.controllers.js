@@ -29,11 +29,12 @@ const transAddTruck = async (req, res) => {
         return res.json({ success: false, message: 'Licence number is already used!' })
     }
 
-    const truck = new Trucks({
+    let truck = new Trucks({
         licenceNumber: req.body.licenceNumber,
         licenceType: req.body.licenceType,
         truckType: req.body.truckType,
         productionYear: req.body.productionYear,
+        status: req.body.status || 'active',
         stnk: req.body.stnk || null,
         kir: req.body.kir || null
     });
@@ -48,6 +49,7 @@ const transAddTruck = async (req, res) => {
             licenceType: truck.licenceType,
             truckType: truck.truckType,
             productionYear: truck.productionYear,
+            status: truck.status,
             stnk: truck.stnk,
             kir: truck.kir
         }
