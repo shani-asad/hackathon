@@ -79,7 +79,7 @@ const transAddTruck = async (req, res) => {
         return BadRequest(res, 'Licence number is already used!')
     }
 
-    if (!validateLicenceType(req.body.licenceType)) {
+    if (!validateLicenceType(req.body.licenceType.toLowerCase())) {
         return BadRequest(res, 'Licence type is not valid!')
     }
 
