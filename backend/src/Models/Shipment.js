@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const UserSchema = new mongoose.Schema({
+const shipmentSchema = new mongoose.Schema({
   _id: { type: String, required: true },
   license: { type: String },
   driver: { type: String },
@@ -9,4 +9,5 @@ const UserSchema = new mongoose.Schema({
   loading_date: { type: Date, required: true },
   status: { type: String, required: true },
 });
-module.exports = mongoose.model('Users', UserSchema);
+
+module.exports = mongoose.model('Shipment', shipmentSchema);
