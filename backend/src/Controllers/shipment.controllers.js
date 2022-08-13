@@ -99,7 +99,6 @@ const allocateShipmentId = async (req, res) => {
 
   // Update controller
   if (isTruckValid && isDriverValid) {
-    console.log('UPDATE=================');
     const shipment = await Shipment.findByIdAndUpdate(
       req.params.id,
       {
