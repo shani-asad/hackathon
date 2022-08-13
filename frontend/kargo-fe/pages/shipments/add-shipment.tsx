@@ -1,13 +1,14 @@
 import {NextPage} from "next";
 import Head from "next/head";
 import {Add} from "@mui/icons-material";
-import {FormEvent, useEffect, useState} from "react";
-import {Autocomplete, TextField} from "@mui/material";
+import {FormEvent, useState} from "react";
+import {Alert, Autocomplete, TextField} from "@mui/material";
 import {DesktopDatePicker, LocalizationProvider} from "@mui/x-date-pickers";
 import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
 import Link from "next/link";
 import axios, {AxiosResponse} from "axios";
+import {useRouter} from "next/router";
 
 interface AddShipmentProps {
     districts: string[]
@@ -19,22 +20,32 @@ type DistrictResponse = {
 }
 
 const AddShipment: NextPage<AddShipmentProps> = ({districts}: AddShipmentProps) => {
+    const router = useRouter();
+    const [alertError, setAlertError] = useState<boolean>(false);
+    const [alertSuccess, setAlertSucess] = useState<boolean>(false);
     const [date, setDate] = useState<Date | null>(null);
     const cities = districts;
     const [origin, setOrigin] = useState<string | null>(null);
     const [destination, setDestination] = useState<string | null>(null);
 
-    useEffect(() => {
-        const unix = dayjs(date).unix();
-    }, [date]);
-
     const submitForm = () => {
-        console.log(origin);
-        console.log(destination);
-        console.log(dayjs(date).unix());
-        axios.post('http://localhost:3000/api/shipment/add', {
+        if (date === null || origin === null || destination === null) {
+            setAlertSucess(false);
+            setAlertError(true);
+            return;
+        }
 
-        })
+        axios.post('http://localhost:3000/api/shipment/add', {
+            "origin": origin,
+            "destination": destination,
+            "loading_date": dayjs(date).unix()
+        }).then(() => {
+            setAlertError(false)
+            setAlertSucess(true);
+            setTimeout(() => {
+                router.push('/shipments').then();
+            }, 3000);
+        });
     }
 
     return (
@@ -46,6 +57,12 @@ const AddShipment: NextPage<AddShipmentProps> = ({districts}: AddShipmentProps) 
                 <section className="container flex flex-col items-center h-screen justify-center">
                     <div className="border border-transparent rounded-md p-6 bg-white shadow-lg w-[400px]">
                         <div className="mb-4 border-b pb-4">
+                            {
+                                alertError && <Alert severity="error" className={'mb-4'}>Please Input All Mandatory Fields!</Alert>
+                            }
+                            {
+                                alertSuccess && <Alert severity="success" className={'mb-4'}>Add Shipment Success! You will be redirected into Shipments Page</Alert>
+                            }
                             <div className="flex mb-1 items-center">
                                 <h1 className="text-xl text-gray-700 capitalize mr-3">Add Shipment</h1>
                                 <div className="rounded-full w-8 p-1 bg-green-100 aspect-square flex justify-center items-center">
@@ -110,8 +127,6 @@ const AddShipment: NextPage<AddShipmentProps> = ({districts}: AddShipmentProps) 
 export async function getStaticProps() {
     const districtResponse = await axios.get<AxiosResponse<DistrictResponse>>('http://localhost:3000/api/shipment/districts');
     const districtData = districtResponse.data;
-
-    console.log(districtData.data)
 
     return {
         props: {
