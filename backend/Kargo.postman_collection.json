@@ -1,0 +1,234 @@
+{
+	"info": {
+		"_postman_id": "4e3948c7-18c8-4f41-b036-6cc5c8474652",
+		"name": "Kargo",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Add Truck",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('status code should be 201', () => {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"licenceNumber\": \"{{licenceNumber}}\",\r\n    \"licenceType\": \"{{licenceType}}\",\r\n    \"truckType\": \"{{truckType}}\",\r\n    \"productionYear\": \"{{productionYear}}\",\r\n    \"status\": \"{{status}}\",\r\n    \"stnk\": \"{{stnk}}\",\r\n    \"kir\": \"{{kir}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:{{port}}/api/transporter/trucks/add",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"transporter",
+						"trucks",
+						"add"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Truck",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('status code should be 201', () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"licenceNumber\": \"{{newLicenceNumber}}\",\r\n    \"licenceType\": \"{{newLicenceType}}\",\r\n    \"truckType\": \"{{newTruckType}}\",\r\n\r\n    \"productionYear\": \"{{newProductionYear}}\",\r\n    \"status\": \"{{newStatus}}\",\r\n    \"stnk\": \"{{newStnk}}\",\r\n    \"kir\": \"{{newKir}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:{{port}}/api/transporter/trucks/update/{{truckid}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"transporter",
+						"trucks",
+						"update",
+						"{{truckid}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Trucks",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('status code should be 200', () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test('response body object should have correct property and value', () => {\r",
+							"    const responsJson = pm.response.json();\r",
+							"\r",
+							"    pm.expect(responsJson).to.haveOwnProperty('success');\r",
+							"    pm.expect(responsJson).to.haveOwnProperty('data');\r",
+							"\r",
+							"    pm.expect(responsJson.success).to.equals(true);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:{{port}}/api/transporter/trucks/get",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"transporter",
+						"trucks",
+						"get"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Truck by id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('status code should be 200', () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test('response body object should have correct property and value', () => {\r",
+							"    const responsJson = pm.response.json();\r",
+							"\r",
+							"    pm.expect(responsJson).to.haveOwnProperty('success');\r",
+							"    pm.expect(responsJson).to.haveOwnProperty('data');\r",
+							"\r",
+							"    pm.expect(responsJson.success).to.equals(true);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:{{port}}/api/transporter/trucks/get/{{truckid}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"transporter",
+						"trucks",
+						"get",
+						"{{truckid}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Drivers",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('status code should be 200', () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test('response body object should have correct property and value', () => {\r",
+							"    const responsJson = pm.response.json();\r",
+							"\r",
+							"    pm.expect(responsJson).to.haveOwnProperty('success');\r",
+							"    pm.expect(responsJson).to.haveOwnProperty('data');\r",
+							"\r",
+							"    pm.expect(responsJson.success).to.equals(true);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:{{port}}/api/transporter/drivers/get",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"transporter",
+						"drivers",
+						"get"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

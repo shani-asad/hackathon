@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const Shipment = require('../Models/Shipment');
 const Driver = require('../Models/Drivers');
 const Truck = require('../Models/Trucks');
-const { BadRequest } = require('../Exceptions/Exceptions');
+const { BadRequest, NotFoundError } = require('../Exceptions/Exceptions');
 
 const district = [];
 
@@ -27,7 +27,14 @@ async function getDistricts() {
 getDistricts();
 
 const getShipments = async (req, res) => {
-  const shipment = await Shipment.find();
+  const {order, search} = req.query;
+
+  const ord = parseInt(order, 10);
+
+  const shipment = await Shipment
+                          .find({ shipment_number: {$regex: search || '', $options: "i"} })
+                          .sort({ shipment_number: ord })
+                          .exec();
 
   return res.json({
     success: true,
@@ -43,7 +50,14 @@ const getListDistrict = async (req, res) => {
 };
 
 const addShipment = async (req, res) => {
+  // Get latest ship number
+  const shipmentCount = await Shipment.count();
+
+  // Generate custom id
+  const shipNumber = `BO-${shipmentCount}`;
+
   let shipment = new Shipment({
+    shipment_number: shipNumber,
     license: null,
     driver: null,
     origin: req.body.origin,
@@ -54,10 +68,11 @@ const addShipment = async (req, res) => {
 
   shipment = await shipment.save();
 
-  return res.json({
+  return res.status(201).json({
     success: true,
     data: {
       id: shipment.id,
+      shipment_number: shipment.shipment_number,
       origin: shipment.origin,
       destination: shipment.destination,
       loading_date: shipment.loading_date,
@@ -119,7 +134,11 @@ const allocateShipmentId = async (req, res) => {
       },
     );
 
-    return res.json({
+    if (shipment == null) {
+      return NotFoundError(res, 'Shipment id not found');
+    }
+
+    return res.status(201).json({
       success: true,
       message: 'Shipment allocated',
       data: shipment,
@@ -162,7 +181,11 @@ const updateStatusShipmentId = async (req, res) => {
     },
   );
 
-  return res.json({
+  if (shipment == null) {
+    return NotFoundError(res, 'Shipment id not found');
+  }
+
+  return res.status(201).json({
     success: true,
     message: 'Shipment status updated',
     data: shipment,
