@@ -6,11 +6,9 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 require('dotenv/config');
 
-// Routes
-const notesRouter = require('./Routes/notes.routes');
-
 const app = express();
 
+// Server Plugin
 app.use(cors());
 app.use(logger('dev'));
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -26,7 +24,7 @@ mongoose
   .then(() => console.log('Database Connected'))
   .catch((err) => console.log(err));
 
-app.use('/notes', notesRouter);
+app.use('/api', require('./api'));
 
 // APIs for integration testing
 app.get('/', (req, res) => {
