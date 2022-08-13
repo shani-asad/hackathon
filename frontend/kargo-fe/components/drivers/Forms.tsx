@@ -21,6 +21,7 @@ const FormDriver = (props: any = null) => {
   }
   async function handleSubmit() {
     console.log("submit");
+    console.log(props.title);
   }
 
   async function handleOpenToast() {
@@ -46,7 +47,7 @@ const FormDriver = (props: any = null) => {
         <div className="max-w-xl p-5 mx-auto my-10 bg-white rounded-md shadow-sm">
           <div className="text-center">
             <h1 className="my-3 text-3xl font-semibold text-gray-700">
-              Add driver
+              {props.title}
             </h1>
           </div>
           <div>

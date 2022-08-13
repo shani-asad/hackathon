@@ -8,7 +8,7 @@ const EditDriver: NextPage = () => {
 
   return (
     <>
-      <FormDriver />
+      <FormDriver title={"Edit Driver"} />
     </>
   );
 };

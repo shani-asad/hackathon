@@ -8,14 +8,20 @@ import TableContainer from "@mui/material/TableContainer";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import MenuItem from "@mui/material/MenuItem";
+import FormHelperText from "@mui/material/FormHelperText";
+import FormControl from "@mui/material/FormControl";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
 import {
   DriverTable,
   Driver,
   DriverDocument,
   DriverStatus,
   Order,
+  Action,
 } from "../../types/driver";
 import { HeadTable } from "./TableHead";
+import { useRouter } from "next/router";
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -54,9 +60,10 @@ function stableSort<T>(
   return stabilizedThis.map((el) => el[0]);
 }
 
-export default function DriversTable() {
+export default function DriversTable(props: any) {
   const rows: DriverTable[] = [
     {
+      id: "1",
       name: "Jack",
       phoneNumber: "1234567889",
       createdAt: "2 Agustus 2020",
@@ -64,6 +71,7 @@ export default function DriversTable() {
       dropdown: "Update",
     },
     {
+      id: "2",
       name: "Jane",
       phoneNumber: "1234567889",
       createdAt: "2 Agustus 2021",
@@ -72,30 +80,43 @@ export default function DriversTable() {
     },
   ];
 
+  const router = useRouter();
   const [order, setOrder] = React.useState<Order>("asc");
   const [orderBy, setOrderBy] = React.useState<keyof DriverTable>("name");
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
-  const handleRequestSort = (
+  async function handleRequestSort(
     event: React.MouseEvent<unknown>,
     property: keyof DriverTable
-  ) => {
+  ) {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
     setOrderBy(property);
-  };
+  }
 
-  const handleChangePage = (event: unknown, newPage: number) => {
+  async function handleChangePage(event: unknown, newPage: number) {
     setPage(newPage);
-  };
+  }
 
-  const handleChangeRowsPerPage = (
+  async function handleChangeRowsPerPage(
     event: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  ) {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
-  };
+  }
+
+  async function handleActionChange(e: SelectChangeEvent) {
+    const value = e.target.value;
+    const type = value.split(" ")[0];
+
+    if (type === Action.EDIT) {
+      const id = value.split(" ")[1];
+      router.push(`/drivers/edit/${id}`);
+    } else {
+      console.log("call deactivate");
+    }
+  }
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
@@ -133,7 +154,19 @@ export default function DriversTable() {
                       <TableCell align="right">{row.phoneNumber}</TableCell>
                       <TableCell align="right">{row.createdAt}</TableCell>
                       <TableCell align="right">{row.status}</TableCell>
-                      <TableCell align="right">{row.dropdown}</TableCell>
+                      <TableCell align="right">
+                        <Select onChange={handleActionChange} label="Update">
+                          <MenuItem value={`${Action.EDIT} ${row.id}`}>
+                            Change Details
+                          </MenuItem>
+                          <MenuItem
+                            value={Action.DEACTIVATE}
+                            disabled={row.status === DriverStatus.INACTIVE}
+                          >
+                            Deactivate Driver
+                          </MenuItem>
+                        </Select>
+                      </TableCell>
                     </TableRow>
                   );
                 })}

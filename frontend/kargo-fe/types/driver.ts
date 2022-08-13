@@ -8,6 +8,7 @@ export interface Driver {
 }
 
 export interface DriverTable {
+  id: string;
   name: string;
   phoneNumber: string;
   createdAt: string;
@@ -33,4 +34,8 @@ export interface TableProps {
   order: Order;
   orderBy: string;
   rowCount: number;
+}
+export enum Action {
+  EDIT = "EDIT",
+  DEACTIVATE = "DEACTIVATE",
 }
