@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const {BadRequest} = require('../Exceptions/Exceptions');
+const { BadRequest } = require('../Exceptions/Exceptions');
 const ObjectId = require('mongoose').Types.ObjectId;
 
 const Trucks = require("../Models/Trucks");
@@ -15,16 +15,15 @@ const transGetTruckTypes = async (req, res) => {
         data.push(item.name)
     });
 
-    return res.json
-        ({
-            success: true,
-            data
-        })
+    return res.json({
+        success: true,
+        data
+    })
 }
 
 const transAddTruckType = async (req, res) => {
     if (await TruckTypes.findOne({ name: req.body.name })) {
-        return res.json({ success: false, message: 'Truck type is already registered!' })
+        return BadRequest(res, 'Truck type is already registered!')
     }
 
     let truckType = new TruckTypes({
@@ -46,11 +45,10 @@ const transAddTruckType = async (req, res) => {
 const transGetTruck = async (req, res) => {
     const trucks = await Trucks.find()
 
-    return res.json
-        ({
-            success: true,
-            data: trucks
-        })
+    return res.json({
+        success: true,
+        data: trucks
+    })
 }
 
 const transGetTruckDetails = async (req, res) => {
@@ -64,11 +62,10 @@ const transGetTruckDetails = async (req, res) => {
         return BadRequest(res, `Cannot find truck with id ${req.params.id}`)
     }
 
-    return res.json
-        ({
-            success: true,
-            data: truck
-        })
+    return res.json({
+        success: true,
+        data: truck
+    })
 
 }
 
@@ -156,7 +153,7 @@ const transGetDriverDetails = async (req, res) => {
 
 const transAddDriver = async (req, res) => {
     if (await Drivers.findOne({ phone: req.body.phone })) {
-        return res.json({ success: false, message: 'Phone number is already used!' })
+        return BadRequest(res, 'Phone number is already used!')
     }
 
     let driver = new Drivers({
