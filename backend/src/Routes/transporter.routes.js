@@ -6,6 +6,10 @@ const transporterControllers = require('../Controllers/transporter.controllers')
 const router = express.Router();
 router.use(bodyParser.json());
 
+
+router.get('/trucks/types/get', transporterControllers.transGetTruckTypes);
+router.post('/trucks/types/add', transporterControllers.transAddTruckType);
+
 // some routes are commented because they don't have controller yet
 //ticket1
 // router.post('/login', transporterControllers.transLogin);

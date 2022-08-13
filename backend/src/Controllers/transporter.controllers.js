@@ -1,7 +1,45 @@
 const mongoose = require('mongoose');
+const BadRequest = require('../Exceptions/NotFoundError');
 
 const Trucks = require("../Models/Trucks");
+const TruckTypes = require("../Models/TruckTypes");
 const Drivers = require("../Models/Drivers");
+
+////////// TRUCK TYPES //////////
+const transGetTruckTypes = async (req, res) => {
+    const truckTypes = await TruckTypes.find()
+    const data = []
+
+    truckTypes.forEach((item) => {
+        data.push(item.name)
+    });
+
+    return res.json
+        ({
+            success: true,
+            data: data
+        })
+}
+
+const transAddTruckType = async (req, res) => {
+    if (await TruckTypes.findOne({ name: req.body.name })) {
+        return res.json({ success: false, message: 'Truck type is already registered!' })
+    }
+
+    let truckType = new TruckTypes({
+        name: req.body.name,
+    });
+
+    truckType = await truckType.save()
+
+    return res.json({
+        success: true,
+        data: {
+            id: truckType._id,
+            name: truckType.name
+        }
+    });
+}
 
 ////////// TRUCKS //////////
 const transGetTruck = async (req, res) => {
@@ -24,9 +62,18 @@ const transGetTruckDetails = async (req, res) => {
 
 }
 
+const validateLicenceType = (licenceType) => {
+    const availableLicenceTypes = ['yellow','black']
+    return availableLicenceTypes.includes(licenceType)
+}
+
 const transAddTruck = async (req, res) => {
     if (await Trucks.findOne({ licenceNumber: req.body.licenceNumber })) {
         return res.json({ success: false, message: 'Licence number is already used!' })
+    }
+
+    if(!validateLicenceType(req.body.licenceType)){
+        return BadRequest(res, 'Licence type is not valid!')
     }
 
     let truck = new Trucks({
@@ -130,6 +177,8 @@ const transUpdateDriver = async (req, res) => {
 }
 
 module.exports = {
+    transGetTruckTypes,
+    transAddTruckType,
     transAddTruck,
     transGetTruck,
     transGetTruckDetails,
