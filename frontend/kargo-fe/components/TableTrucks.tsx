@@ -4,9 +4,9 @@ import Link from "next/link";
 
 export default function TableTrucks() {
   const products = [
-    { id: 1, license: "B 1234 A", truckType: "Tronton", plateType: "Yellow", productionYear: "2001", status: "Active" },
-    { id: 2, license: "B 1234 A", truckType: "Tronton", plateType: "Yellow", productionYear: "2001", status: "Active" },
-    { id: 3, license: "B 1234 A", truckType: "Tronton", plateType: "Yellow", productionYear: "2001", status: "Active" },
+    { id: 1, licenseNumber: "B 3421 AC", truckType: "Tronton", licenceType: "Yellow", productionYear: "2001", status: "Active" },
+    { id: 2, licenseNumber: "L 4552 GF", truckType: "Tronton", licenceType: "Blacl", productionYear: "2011", status: "Active" },
+    { id: 3, licenseNumber: "B 1113 TH", truckType: "Tronton", licenceType: "Yellow", productionYear: "2010", status: "Inactive" },
   ];
   const router = useRouter();
 
@@ -61,10 +61,10 @@ export default function TableTrucks() {
                     router.push(`trucks/${product.id}`);
                   }}
                 >
-                  {product.license}
+                  {product.licenseNumber}
                 </td>
                 <td className="border">{product.truckType}</td>
-                <td className="border">{product.plateType}</td>
+                <td className="border">{product.licenceType}</td>
                 <td className="border">{product.productionYear}</td>
                 <td className="border">
                   <div className="relative inline-flex">
