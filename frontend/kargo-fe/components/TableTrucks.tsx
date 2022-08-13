@@ -2,10 +2,14 @@ import React from "react";
 
 export default function TableTrucks() {
   const products = [
-    { id: 1, name: "B 1234 A", truckType: "Tronton", plateType: "Yellow", productionYear: "2001", status: "Active" },
-    { id: 2, name: "B 1234 A", truckType: "Tronton", plateType: "Yellow", productionYear: "2001", status: "Active" },
-    { id: 3, name: "B 1234 A", truckType: "Tronton", plateType: "Yellow", productionYear: "2001", status: "Active" },
+    { id: 1, license: "B 1234 A", truckType: "Tronton", plateType: "Yellow", productionYear: "2001", status: "Active" },
+    { id: 2, license: "B 1234 A", truckType: "Tronton", plateType: "Yellow", productionYear: "2001", status: "Active" },
+    { id: 3, license: "B 1234 A", truckType: "Tronton", plateType: "Yellow", productionYear: "2001", status: "Active" },
   ];
+  const handleDetailTrucks = () => {
+    
+  }
+
   return (
     <div>
       <div className="p-5 flex flex-row justify-between">
@@ -51,7 +55,7 @@ export default function TableTrucks() {
           <tbody>
             {products.map((product) => (
               <tr key={product.id} className="text-center border">
-                <td className="border p-3">{product.name}</td>
+                <td className="border p-3" onClick={handleDetailTrucks}>{product.license}</td>
                 <td className="border">{product.truckType}</td>
                 <td className="border">{product.plateType}</td>
                 <td className="border">{product.productionYear}</td>
