@@ -7,10 +7,20 @@ import {DesktopDatePicker, LocalizationProvider} from "@mui/x-date-pickers";
 import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
 import Link from "next/link";
+import axios, {AxiosResponse} from "axios";
 
-const AddShipment: NextPage = () => {
+interface AddShipmentProps {
+    districts: string[]
+}
+
+type DistrictResponse = {
+    message: boolean,
+    data: string[]
+}
+
+const AddShipment: NextPage<AddShipmentProps> = ({districts}: AddShipmentProps) => {
     const [date, setDate] = useState<Date | null>(null);
-    const [cities, setCities] = useState<string[]>(['Jakarta', 'Bandung', 'Surabaya', 'Yogyakarta', 'Makassar', 'Bandar Lampung']);
+    const cities = districts;
     const [origin, setOrigin] = useState<string | null>(null);
     const [destination, setDestination] = useState<string | null>(null);
 
@@ -22,6 +32,9 @@ const AddShipment: NextPage = () => {
         console.log(origin);
         console.log(destination);
         console.log(dayjs(date).unix());
+        axios.post('http://localhost:3000/api/shipment/add', {
+
+        })
     }
 
     return (
@@ -92,6 +105,19 @@ const AddShipment: NextPage = () => {
             </main>
         </>
     )
+}
+
+export async function getStaticProps() {
+    const districtResponse = await axios.get<AxiosResponse<DistrictResponse>>('http://localhost:3000/api/shipment/districts');
+    const districtData = districtResponse.data;
+
+    console.log(districtData.data)
+
+    return {
+        props: {
+            districts: districtData.data
+        },
+    }
 }
 
 export default AddShipment;
