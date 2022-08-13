@@ -4,7 +4,7 @@ import Link from "next/link";
 import {
     Button, FormControl,
     InputAdornment, MenuItem,
-    Paper, Select, SelectChangeEvent,
+    Paper, Select,
     Table,
     TableBody,
     TableCell,
@@ -53,7 +53,7 @@ const Shipments: NextPage = () => {
             </header>
             <main className="container py-12">
                 <div className="flex justify-end items-center">
-                    <Link href={'/add-shipment'}>
+                    <Link href={'/shipments/add-shipment'}>
                         <Button className={'mr-6'} variant={"outlined"} size={"large"} endIcon={<Add/>}>
                             Add Shipments
                         </Button>
