@@ -61,8 +61,8 @@ export function HeadTable(props: TableProps) {
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
-            align={headCell.numeric ? "right" : "left"}
-            padding={headCell.disablePadding ? "none" : "normal"}
+            align="right"
+            padding="normal"
             sortDirection={orderBy === headCell.id ? order : false}
           >
             <TableSortLabel

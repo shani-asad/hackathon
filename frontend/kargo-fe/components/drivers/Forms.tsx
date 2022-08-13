@@ -1,16 +1,51 @@
 import { NextPage } from "next/types";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Snackbar, { SnackbarOrigin } from "@mui/material/Snackbar";
+import axios from "axios";
+import { useRouter } from "next/router";
 
 const FormDriver = (props: any = null) => {
   const [formValues, setFormValues] = useState({
-    name: props.name || "",
-    phoneNumber: props.phoneNumber || "",
-    license: props.license || "",
-    idCard: props.idCard || "",
+    name: "",
+    phoneNumber: "",
+    license: "",
+    idCard: "",
   });
 
+  const router = useRouter();
+  const { id } = router.query;
+
   const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    if (id) {
+      const fetch = async () => {
+        try {
+          const res = await axios.get(
+            `http://localhost:3000/api/transporter/drivers/get/${id}`
+          );
+
+          const { name, phone, createdAt, status, license, idCard } =
+            res.data.data;
+
+          setFormValues({
+            name,
+            phoneNumber: phone,
+            license: license || "",
+            idCard: idCard || "",
+          });
+        } catch (e: any) {
+          console.log(e);
+        }
+      };
+
+      fetch().then(() => {
+        console.log("succeed");
+      });
+    }
+
+    console.log(props);
+  }, []);
 
   async function handleInputChange(e: any) {
     e.preventDefault();
@@ -20,8 +55,22 @@ const FormDriver = (props: any = null) => {
     setFormValues({ ...formValues, [name]: newValue });
   }
   async function handleSubmit() {
-    console.log("submit");
-    console.log(props.title);
+    const isValid = formValues.name && formValues.phoneNumber;
+    if (isValid) {
+      const upload = async () => {
+        await axios.post("http://localhost:3000/api/transporter/drivers/add", {
+          name: formValues.name,
+          phone: formValues.phoneNumber,
+          idCard: "",
+          license: "",
+        });
+      };
+
+      upload().then(() => {
+        console.log("succeed");
+      });
+    } else {
+    }
   }
 
   async function handleOpenToast() {
@@ -29,8 +78,6 @@ const FormDriver = (props: any = null) => {
   }
 
   async function handleCloseToast() {
-    console.log("leave");
-
     setOpen(false);
   }
 

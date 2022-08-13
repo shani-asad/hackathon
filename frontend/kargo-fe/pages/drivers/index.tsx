@@ -14,6 +14,7 @@ const DriverPage: NextPage = () => {
     e.preventDefault();
     const value = e.currentTarget.value;
     console.log(value);
+    setText(value);
   }
 
   async function handleChangePage() {
@@ -25,31 +26,33 @@ const DriverPage: NextPage = () => {
   return (
     <>
       <div className={"container mx-auto"}>
-        <div className={"flex flex-row"}>
-          <Box
-            component="form"
-            sx={{
-              "& > :not(style)": { m: 1, width: "25ch" },
-            }}
-            noValidate
-            autoComplete="off"
-          >
-            <TextField
-              label="Search"
-              color="primary"
+        <div className="max-w-xxl p-5 mx-auto my-10 bg-white rounded-md shadow-sm">
+          <div className={"flex flex-row"}>
+            <Box
+              component="form"
+              sx={{
+                "& > :not(style)": { m: 1, width: "25ch" },
+              }}
+              noValidate
+              autoComplete="off"
+            >
+              <TextField
+                label="Search"
+                color="primary"
+                variant="outlined"
+                onChange={handleChange}
+              />
+            </Box>
+            <Button
               variant="outlined"
-              onChange={handleChange}
-            />
-          </Box>
-          <Button
-            variant="outlined"
-            startIcon={<AddIcon />}
-            onClick={handleChangePage}
-          >
-            Add driver
-          </Button>
+              startIcon={<AddIcon />}
+              onClick={handleChangePage}
+            >
+              Add driver
+            </Button>
+          </div>
+          <DriversTable text={text} />
         </div>
-        <DriversTable />
       </div>
     </>
   );

@@ -62,37 +62,73 @@ function stableSort<T>(
   return stabilizedThis.map((el) => el[0]);
 }
 
+const monthNames = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
+
 export default function DriversTable(props: any) {
-  React.useEffect(() => {
-    const getDrivers = async () => {
-      try {
-        const result = await axios.get(
-          "http://localhost:3000/api/transporter/drivers/get"
-        );
-        console.log(result);
-
-        return result.data.data;
-      } catch (e: any) {
-        console.log(e.message);
-      }
-    };
-    getDrivers().then((data) => {
-      const filtered: DriverTable[] = data.map((el: DriverResponse) => {
-        const { name, phone, id, status, createdAt } = el;
-
-        return { id, name, phoneNumber: phone, status, createdAt };
-      });
-
-      setRows(filtered);
-    });
-  }, []);
-
   const router = useRouter();
   const [order, setOrder] = React.useState<Order>("asc");
   const [orderBy, setOrderBy] = React.useState<keyof DriverTable>("name");
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [rows, setRows] = React.useState<DriverTable[]>([]);
+  const [fetch, setFetch] = React.useState(true);
+  const [text, setText] = React.useState<string>(props.text);
+
+  React.useEffect(() => {
+    if (fetch) {
+      const getDrivers = async () => {
+        try {
+          const result = await axios.get(
+            "http://localhost:3000/api/transporter/drivers/get"
+          );
+          console.log(result);
+
+          return result.data.data;
+        } catch (e: any) {
+          console.log(e.message);
+        }
+      };
+      getDrivers().then((data) => {
+        const filtered: DriverTable[] = data.map((el: DriverResponse) => {
+          const { name, phone, id, status, createdAt } = el;
+
+          let dateObj = new Date(createdAt);
+
+          let month = dateObj.getUTCMonth(); //months from 1-12
+          let day = dateObj.getUTCDate();
+          let year = dateObj.getUTCFullYear();
+
+          let newdate = day + " " + monthNames[month] + " " + year;
+
+          return { id, name, phoneNumber: phone, status, createdAt: newdate };
+        });
+
+        if (props.text != "") {
+          const searched = filtered.filter((el) =>
+            el.name.includes(props.text)
+          );
+          setRows(searched);
+        } else {
+          setRows(filtered);
+        }
+      });
+
+      setFetch(false);
+    }
+  }, [fetch, text]);
 
   async function handleRequestSort(
     event: React.MouseEvent<unknown>,
@@ -117,11 +153,28 @@ export default function DriversTable(props: any) {
   async function handleActionChange(e: SelectChangeEvent) {
     const value = e.target.value;
     const type = value.split(" ")[0];
+    const id = value.split(" ")[1];
 
     if (type === Action.EDIT) {
-      const id = value.split(" ")[1];
       router.push(`/drivers/edit/${id}`);
-    } else {
+    } else if (type === Action.DEACTIVATE) {
+      const driver = rows.filter((el) => el.id == id);
+
+      const update = async () => {
+        const res = await axios.put(
+          `http://localhost:3000/api/transporter/drivers/update/${id}`,
+          {
+            name: driver[0].name,
+            phone: driver[0].phoneNumber,
+            status: DriverStatus.INACTIVE,
+          }
+        );
+      };
+
+      update().then(() => {
+        console.log("succeed");
+        setFetch(true);
+      });
       console.log("call deactivate");
     }
   }
@@ -168,7 +221,7 @@ export default function DriversTable(props: any) {
                             Change Details
                           </MenuItem>
                           <MenuItem
-                            value={Action.DEACTIVATE}
+                            value={`${Action.DEACTIVATE} ${row.id}`}
                             disabled={row.status === DriverStatus.INACTIVE}
                           >
                             Deactivate Driver

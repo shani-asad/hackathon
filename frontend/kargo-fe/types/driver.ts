@@ -11,7 +11,7 @@ export interface DriverResponse {
   id: string;
   name: string;
   phone: string;
-  createdAt: Date;
+  createdAt: number;
   status: string;
 }
 
@@ -25,8 +25,8 @@ export interface DriverTable {
 }
 
 export enum DriverStatus {
-  ACTIVE = "ACTIVE",
-  INACTIVE = "INACTIVE",
+  ACTIVE = "active",
+  INACTIVE = "inactive",
 }
 
 export interface DriverDocument {
