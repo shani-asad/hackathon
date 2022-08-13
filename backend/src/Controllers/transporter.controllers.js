@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const BadRequest = require('../Exceptions/NotFoundError');
+const BadRequest = require('../Exceptions/Exceptions');
 
 const Trucks = require("../Models/Trucks");
 const TruckTypes = require("../Models/TruckTypes");
@@ -63,16 +63,16 @@ const transGetTruckDetails = async (req, res) => {
 }
 
 const validateLicenceType = (licenceType) => {
-    const availableLicenceTypes = ['yellow','black']
+    const availableLicenceTypes = ['yellow', 'black']
     return availableLicenceTypes.includes(licenceType)
 }
 
 const transAddTruck = async (req, res) => {
     if (await Trucks.findOne({ licenceNumber: req.body.licenceNumber })) {
-        return res.json({ success: false, message: 'Licence number is already used!' })
+        return BadRequest(res, 'Licence number is already used!')
     }
 
-    if(!validateLicenceType(req.body.licenceType)){
+    if (!validateLicenceType(req.body.licenceType)) {
         return BadRequest(res, 'Licence type is not valid!')
     }
 
