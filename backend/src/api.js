@@ -3,10 +3,12 @@ const express = require('express');
 
 const router = express.Router();
 
-const notesRouter = require('./Routes/notes.routes');
+const transporterRouter = require('./Routes/transporter.routes');
 const trucksRouter = require('./Routes/trucks.routes');
 
-router.use('/notes', notesRouter);
+router.use('/user', transporterRouter);
+
+const shipmentRouter = require('./Routes/user.routes');
 router.use('/trucks', trucksRouter);
 
 // RETURN ROUTER AS MODULE
