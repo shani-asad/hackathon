@@ -1,27 +1,56 @@
-import * as React from "react";
-import { alpha } from "@mui/material/styles";
 import Box from "@mui/material/Box";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TablePagination from "@mui/material/TablePagination";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
-import {
-  DriverTable,
-  Driver,
-  DriverDocument,
-  DriverStatus,
-} from "../../types/driver";
-import { HeadTable } from "../../components/drivers/TableHead";
+import TextField from "@mui/material/TextField";
 import { NextPage } from "next";
 import DriversTable from "../../components/drivers/Table";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
+import { Button } from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
 
 const DriverPage: NextPage = () => {
+  const router = useRouter();
+  const [text, setText] = useState("");
+  async function handleChange(e: any) {
+    e.preventDefault();
+    const value = e.currentTarget.value;
+    console.log(value);
+  }
+
+  async function handleChangePage() {
+    router.push("/drivers/add");
+  }
+
+  useEffect(() => {}, [text]);
+
   return (
     <>
-      <DriversTable />
+      <div className={"container mx-auto"}>
+        <div className={"flex flex-row"}>
+          <Box
+            component="form"
+            sx={{
+              "& > :not(style)": { m: 1, width: "25ch" },
+            }}
+            noValidate
+            autoComplete="off"
+          >
+            <TextField
+              label="Search"
+              color="primary"
+              variant="outlined"
+              onChange={handleChange}
+            />
+          </Box>
+          <Button
+            variant="outlined"
+            startIcon={<AddIcon />}
+            onClick={handleChangePage}
+          >
+            Add driver
+          </Button>
+        </div>
+        <DriversTable />
+      </div>
     </>
   );
 };
